@@ -56,4 +56,21 @@ public class S3RequestRetrieverTest {
 
         verify( mockS3Client, times(1) ).getObjectAsBytes(any(GetObjectRequest.class));
     }
+
+    @Test
+    @DisplayName("getNextRequest should return empty when no objects are found")
+    void testGetNextRequestWhenNoObjects() throws Exception {
+
+        ListObjectsV2Response emptyListResponse = ListObjectsV2Response.builder()
+                .contents(List.of())
+                .build();
+        when( mockS3Client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(emptyListResponse);
+
+        Optional<WidgetRequest> result = retriever.getNextRequest();
+
+        assertFalse(result.isPresent(), "The returned Optional should be empty");
+
+        verify( mockS3Client, never()).getObjectAsBytes(any(GetObjectRequest.class));
+        verify( mockS3Client, never()).deleteObject(any(DeleteObjectRequest.class));
+    }
 }
