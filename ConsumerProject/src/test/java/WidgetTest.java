@@ -44,7 +44,6 @@ public class WidgetTest {
         assertEquals("tangerine", widget.getOtherAttributes().get("color"));
         assertEquals("large", widget.getOtherAttributes().get("size"));
         assertEquals("nike", widget.getOtherAttributes().get("brand"));
-        
     }
 
 }
